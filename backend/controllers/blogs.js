@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router()
+const middleware = require('../utils/middleware')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -21,7 +21,7 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const { title, author, url, likes } = request.body
 
   const authUser = request.user
@@ -53,7 +53,7 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(createdBlog)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const authUser = request.user
 
   if (!authUser.id) {
