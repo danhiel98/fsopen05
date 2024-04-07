@@ -192,6 +192,9 @@ test('update blog when only title is sent', async () => {
   const updatedBlog = updatedBlogResponse.body
 
   assert.strictEqual(updatedBlog.title, newData.title)
+  assert.strictEqual(blogToUpdate.author, updatedBlog.author)
+  assert.strictEqual(blogToUpdate.url, updatedBlog.url)
+  assert.strictEqual(blogToUpdate.likes, updatedBlog.likes)
 })
 
 test('update blog when nothing is sent', async () => {
