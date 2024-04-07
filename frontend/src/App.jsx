@@ -80,7 +80,7 @@ const App = () => {
   const deleteBlog = async (blog) => {
     try {
       await blogService.remove(blog.id)
-      setBlogs(blogs.filter(b => b.id != blog.id))
+      setBlogs(blogs.filter(b => b.id !== blog.id))
     } catch ({ response }) {
       setMessage({ content: response.data.error, type: 'error' })
     }
@@ -157,4 +157,4 @@ const App = () => {
   )
 }
 
-export default App 
+export default App

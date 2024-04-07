@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
 const Blog = ({ user, blog, deleteBlog }) => {
@@ -40,7 +40,7 @@ const Blog = ({ user, blog, deleteBlog }) => {
   const blogDetail = () => (
     <>
       <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
-        <li><a href={blog.url} target="_blank">{blog.url}</a></li>
+        <li><a href={blog.url} target="_blank" rel="noreferrer">{blog.url}</a></li>
         <li>likes {likes} <button onClick={handleLike}>like</button></li>
         <li>{blog.user.name}</li>
       </ul>
