@@ -74,7 +74,18 @@ const App = () => {
     } catch (error) {
       setMessage({ content: error.message, type: 'error' })
     }
+  }
 
+  const likeBlog = async (blog) => {
+    try {
+      const updatedBlog = await blogService
+        .update(blog.id, { likes: blog.likes + 1 })
+
+      const updatedBlogs = blogs.map(b => (b.id === updatedBlog.id ? updatedBlog : b))
+      setBlogs(updatedBlogs)
+    } catch ({ response }) {
+      setMessage({ content: response.data.error, type: 'error' })
+    }
   }
 
   const deleteBlog = async (blog) => {
@@ -124,6 +135,7 @@ const App = () => {
             key={blog.id}
             blog={blog}
             user={user}
+            likeBlog={likeBlog}
             deleteBlog={deleteBlog}
           />
         )
