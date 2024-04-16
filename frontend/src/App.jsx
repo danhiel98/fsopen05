@@ -45,6 +45,7 @@ const App = () => {
       const user = await loginService.login({ username, password })
 
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -102,6 +103,7 @@ const App = () => {
       <div>
         username
         <input
+          data-testid="username"
           type="text"
           name="Username"
           value={username}
@@ -111,13 +113,14 @@ const App = () => {
       <div>
         password
         <input
+          data-testid="password"
           type="password"
           name="Password"
           value={password}
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">save</button>
+      <button type="submit">login</button>
     </form>
   )
 
@@ -128,7 +131,7 @@ const App = () => {
   )
 
   const blogsResult = (blogs) => (
-    <div>
+    <div data-testid="blogs-list">
       {
         blogs.map(blog =>
           <Blog

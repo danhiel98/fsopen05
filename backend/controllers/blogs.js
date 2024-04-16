@@ -7,6 +7,7 @@ blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
     .find({})
     .populate('user', { username: 1, name: 1 })
+    .sort({ likes: 'desc' })
 
   response.json(blogs)
 })
@@ -50,7 +51,10 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   user.blogs = user.blogs.concat(createdBlog._id)
   await user.save()
 
-  response.status(201).json(createdBlog)
+  const resultBlog = await createdBlog
+    .populate('user', { username: 1, name: 1 })
+
+  response.status(201).json(resultBlog)
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
@@ -62,6 +66,8 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
 
   const user = await User.findById(authUser.id)
   const blog = await Blog.findById(request.params.id)
+
+  console.log(user, blog)
 
   if (!blog) {
     return response.status(404).json({ error: 'blog not found' })

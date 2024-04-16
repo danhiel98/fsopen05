@@ -10,17 +10,17 @@ const Blog = ({ user, blog, likeBlog, deleteBlog }) => {
   }
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+  // const [likes, setLikes] = useState(blog.likes)
 
   const action = visible ? 'hide' : 'show'
-  const sameUser = user && user.username === blog.user.username
+  const sameUser = user && blog.user && user.username === blog.user.username
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
   const handleLike = async () => {
-    setLikes(likes + 1)
+    // setLikes(likes + 1)
     await likeBlog(blog)
   }
 
@@ -36,8 +36,8 @@ const Blog = ({ user, blog, likeBlog, deleteBlog }) => {
     <>
       <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
         <li><a href={blog.url} target="_blank" rel="noreferrer">{blog.url}</a></li>
-        <li><span>likes {likes}</span> <button onClick={handleLike}>like</button></li>
-        <li>{blog.user.name}</li>
+        <li><span className='likesCount'>likes {blog.likes}</span> <button onClick={handleLike}>like</button></li>
+        <li>{blog.user && blog.user.name}</li>
       </ul>
       {sameUser &&
         <button onClick={handleDelete}>remove</button>
@@ -47,7 +47,7 @@ const Blog = ({ user, blog, likeBlog, deleteBlog }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author}
+      <span>{blog.title}</span> <span>{blog.author}</span>
       <button onClick={toggleVisibility}>{action}</button>
 
       {visible && blogDetail()}
