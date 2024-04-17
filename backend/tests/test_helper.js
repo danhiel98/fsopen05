@@ -6,19 +6,19 @@ const initialBlogs = [
     title: 'The new world',
     author: 'Richard Smith',
     url: 'https://thenewworldblog.com',
-    likes: 500
+    likes: 50
   },
   {
     title: 'Smashing the code',
     author: 'Robert Stones',
     url: 'https://smashthecode.io',
-    likes: 855
+    likes: 85
   },
   {
     title: 'SpiderTech',
     author: 'Alisson Lopez',
     url: 'https://thespidertech.com',
-    likes: 1200
+    likes: 120
   },
 ]
 

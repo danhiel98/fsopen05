@@ -112,10 +112,44 @@ describe('Blog app', () => {
 
         await expect(blogsLocator.getByRole('button', { name: 'remove' })).not.toBeVisible()
       })
+    })
 
-      // test('blogs arranged in the order according to likes', async ({ page }) => {
+    describe('when there are several blogs', () => {
+      beforeEach(async ({ page, request }) => {
+        await page.getByText('logout').waitFor()
 
-      // })
+        const user = await page.evaluate(() =>
+          JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
+        )
+
+        for (let blog of BLOGS_LIST) {
+          await request.post('/api/blogs', {
+            data: blog,
+            headers: {
+              authorization: `Bearer ${user.token}`
+            }
+          })
+        }
+        await page.goto('http://localhost:5173')
+      })
+
+      test('blogs arranged in the order according to likes', async ({ page }) => {
+        await page.getByText('show').first().waitFor()
+        const locator = await page.getByTestId('blogs-list')
+        const items = await locator.locator('.blog-data').all()
+
+        let higger = null
+        for (let blog of items) {
+          await blog.getByRole('button', { name: 'show' }).click()
+          const likesText = await blog.locator('.likesCount').innerText()
+          let likes = Number(likesText.match(/\d+/).join(''))
+          if (higger === null) {
+            higger = likes
+          }
+
+          await expect(higger).toBeGreaterThanOrEqual(likes)
+        }
+      })
     })
   })
 })
